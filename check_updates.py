@@ -1,4 +1,3 @@
-Mohammed, [3/24/2026 4:41 PM]
 import requests
 import datetime
 import time
@@ -16,13 +15,18 @@ headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 
 def assess_risk(notes):
     notes_lower = notes.lower()
-    security_keywords = ["security", "vulnerability", "patch", "cve", "exploit", "fixes security"]
-    if any(k in notes_lower for k in security_keywords):
+    critical_keywords = ["critical", "urgent", "vulnerability", "exploit", "cve", "security patch", "remote code execution"]
+    security_keywords = ["security", "patch", "fixes security", "vulnerability fixed"]
+    bug_keywords = ["bug", "crash", "stability", "performance", "minor fix", "improvement"]
+
+    if any(k in notes_lower for k in critical_keywords):
+        return "🔴 High"
+    elif any(k in notes_lower for k in security_keywords):
         return "🟢 Low"
-    elif any(word in notes_lower for word in ["bug", "crash", "stability", "performance"]):
+    elif any(k in notes_lower for k in bug_keywords):
         return "🟡 Medium"
     else:
-        return "🔴 High"
+        return "🟡 Medium"
 
 print(f"# 📱 Global OS & App Security Tracker")
 print(f"**Audit Date:** {datetime.date.today()}\n")
@@ -32,7 +36,6 @@ print("| Application | Platform | Version | Release Date | Risk Level | Fixes & 
 print("| :--- | :--- | :--- | :--- | :--- | :--- |")
 
 for name, ids in apps.items():
-
     ios_success = False
     try:
         time.sleep(2)
@@ -43,7 +46,6 @@ for name, ids in apps.items():
             ver = data.get('version', 'N/A')
             dt_raw = data.get('currentVersionReleaseDate', '')
             notes = data.get('releaseNotes', 'Security improvements.').replace('\n', '<br>').replace('|', ' ')
-
             try:
                 dt_obj = datetime.datetime.fromisoformat(dt_raw.replace('Z', '+00:00'))
                 dt = dt_obj.strftime('%Y-%m-%d')
@@ -63,8 +65,8 @@ for name, ids in apps.items():
         and_data = android_app(ids['android'])
         a_ver = and_data.get('version', 'Varies')
         a_notes = and_data.get('recentChanges', 'Security improvements.').replace('\n', '<br>').replace('|', ' ')
-
         a_updated = and_data.get('updated', '')
+
         try:
             if isinstance(a_updated, int):
                 a_date = datetime.datetime.fromtimestamp(a_updated).strftime('%Y-%m-%d')
@@ -79,41 +81,3 @@ for name, ids in apps.items():
         print(f"| {name} | Android | Error | N/A | ⚠️ Unknown | Could not reach Google Play. |")
 
 print("\n---\n*This report is automatically generated every 24 hours.*")
-
-Mohammed, [3/24/2026 4:57 PM]
-name: Daily App Update Tracker
-
-on:
-  schedule:
-    - cron: '0 0 * * *'  # Runs every day at 00:00 UTC
-  workflow_dispatch:     # Allows manual run
-
-jobs:
-  update-report:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.11
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install requests google-play-scraper
-
-    - name: Run App Tracker
-      run: |
-        python app_tracker.py > report.md
-
-    - name: Commit and push report
-      run: |
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "GitHub Actions Bot"
-        git add report.md
-        git commit -m "Daily update: $(date +'%Y-%m-%d')" || echo "No changes to commit"
-        git push
