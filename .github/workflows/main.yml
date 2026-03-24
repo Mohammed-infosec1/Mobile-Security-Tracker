@@ -1,0 +1,26 @@
+name: Global Security Audit
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs at midnight automatically
+  workflow_dispatch: # A button so you can run it manually anytime
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install Tools
+        run: pip install requests google-play-scraper
+      - name: Run Global Audit Script
+        run: python check_updates.py > SECURITY_REPORT.md
+      - name: Save the Report
+        run: |
+          git config --global user.name 'Security-Bot'
+          git config --global user.email 'bot@github.com'
+          git add SECURITY_REPORT.md
+          git commit -m "Automated Global Audit Update"
+          git push
