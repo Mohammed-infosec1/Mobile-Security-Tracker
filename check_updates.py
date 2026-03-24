@@ -1,3 +1,4 @@
+Mohammed, [3/24/2026 4:41 PM]
 import requests
 import datetime
 import time
@@ -78,3 +79,41 @@ for name, ids in apps.items():
         print(f"| {name} | Android | Error | N/A | ⚠️ Unknown | Could not reach Google Play. |")
 
 print("\n---\n*This report is automatically generated every 24 hours.*")
+
+Mohammed, [3/24/2026 4:57 PM]
+name: Daily App Update Tracker
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day at 00:00 UTC
+  workflow_dispatch:     # Allows manual run
+
+jobs:
+  update-report:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests google-play-scraper
+
+    - name: Run App Tracker
+      run: |
+        python app_tracker.py > report.md
+
+    - name: Commit and push report
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "GitHub Actions Bot"
+        git add report.md
+        git commit -m "Daily update: $(date +'%Y-%m-%d')" || echo "No changes to commit"
+        git push
