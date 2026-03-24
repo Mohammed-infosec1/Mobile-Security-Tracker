@@ -1,8 +1,9 @@
 import requests
 import datetime
+import time
 from google_play_scraper import app as android_app
 
-# The IDs
+# The App IDs
 apps = {
     "Facebook":  {"ios": "284882215", "android": "com.facebook.katana"},
     "Instagram": {"ios": "389801252", "android": "com.instagram.android"},
@@ -11,7 +12,6 @@ apps = {
     "Snapchat":  {"ios": "447134409", "android": "com.snapchat.android"}
 }
 
-# This "Header" makes the script look like a real browser so Apple doesn't block it
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
 }
@@ -31,36 +31,36 @@ print("| :--- | :--- | :--- | :--- | :--- | :--- |")
 
 for name, ids in apps.items():
     # --- Apple iOS Check ---
-    try:
-        ios_url = f"https://itunes.apple.com/lookup?id={ids['ios']}"
-        response = requests.get(ios_url, headers=headers, timeout=15).json()
-        if response['results']:
-            ios_data = response['results'][0]
-            i_ver = ios_data['version']
-            i_date = ios_data['currentVersionReleaseDate'][:10]
-            # Replace new lines with <br> to keep the table neat
-            i_notes = ios_data.get('releaseNotes', 'Security improvements.').replace('\n', '<br>').replace('|', ' ')
-            i_risk = "🟢 Low" if "2026" in i_date else "🔴 High"
-            print(f"| {name} | iOS | {i_ver} | {i_date} | {i_risk} | {i_notes} |")
-    except Exception:
-        print(f"| {name} | iOS | Fetch Error | N/A | ⚠️ Unknown | Connection busy. Retrying next cycle. |")
+    ios_success = False
+    for attempt in range(3): # Try 3 times if Apple is busy
+        try:
+            ios_url = f"https://itunes.apple.com/lookup?id={ids['ios']}"
+            response = requests.get(ios_url, headers=headers, timeout=20).json()
+            if response['results']:
+                ios_data = response['results'][0]
+                i_ver = ios_data['version']
+                i_date = ios_data['currentVersionReleaseDate'][:10]
+                i_notes = ios_data.get('releaseNotes', 'Security improvements.').replace('\n', '<br>').replace('|', ' ')
+                i_risk = "🟢 Low" if "2026" in i_date else "🔴 High"
+                print(f"| {name} | iOS | {i_ver} | {i_date} | {i_risk} | {i_notes} |")
+                ios_success = True
+                break
+         dream_except:
+            time.sleep(2) # Wait 2 seconds before retrying
+    
+    if not ios_success:
+        print(f"| {name} | iOS | N/A | N/A | ⚠️ Unknown | Apple Store busy. Will retry tomorrow. |")
 
     # --- Google Android Check ---
     try:
         and_data = android_app(ids['android'])
         a_ver = and_data.get('version', 'Varies')
         a_updated = and_data.get('updated')
-        if isinstance(a_updated, int):
-            a_date = datetime.datetime.fromtimestamp(a_updated).strftime('%Y-%m-%d')
-        else:
-            a_date = str(a_updated)[:10]
-        
-        a_notes = and_data.get('recentChanges', 'Security improvements.')
-        if not a_notes: a_notes = "Security improvements."
-        a_notes = a_notes.replace('\n', '<br>').replace('|', ' ')
+        a_date = datetime.datetime.fromtimestamp(a_updated).strftime('%Y-%m-%d') if isinstance(a_updated, int) else str(a_updated)[:10]
+        a_notes = and_data.get('recentChanges', 'Security improvements.').replace('\n', '<br>').replace('|', ' ')
         a_risk = "🟢 Low" if "2026" in a_date else "🔴 High"
         print(f"| {name} | Android | {a_ver} | {a_date} | {a_risk} | {a_notes} |")
     except Exception:
-        pass
+        print(f"| {name} | Android | Error | N/A | ⚠️ Unknown | Could not reach Google Play. |")
 
 print("\n---\n*This report is automatically generated every 24 hours.*")
