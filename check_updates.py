@@ -13,6 +13,16 @@ apps = {
 
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
 
+def assess_risk(notes):
+    notes_lower = notes.lower()
+    security_keywords = ["security", "vulnerability", "patch", "cve", "exploit", "fixes security"]
+    if any(k in notes_lower for k in security_keywords):
+        return "🟢 Low"
+    elif any(word in notes_lower for word in ["bug", "crash", "stability", "performance"]):
+        return "🟡 Medium"
+    else:
+        return "🔴 High"
+
 print(f"# 📱 Global OS & App Security Tracker")
 print(f"**Audit Date:** {datetime.date.today()}\n")
 print("## ⚙️ 1. Core Operating Systems\n| System | Status | Security Notes |\n| :--- | :--- | :--- |\n| Apple iOS | 🟢 Active | *Check Settings > General > Software Update.* |\n| Google Android | 🟢 Active | *Check Settings > Security & Privacy.* |\n")
@@ -22,7 +32,6 @@ print("| :--- | :--- | :--- | :--- | :--- | :--- |")
 
 for name, ids in apps.items():
 
-   
     ios_success = False
     try:
         time.sleep(2)
@@ -34,19 +43,13 @@ for name, ids in apps.items():
             dt_raw = data.get('currentVersionReleaseDate', '')
             notes = data.get('releaseNotes', 'Security improvements.').replace('\n', '<br>').replace('|', ' ')
 
-      
             try:
                 dt_obj = datetime.datetime.fromisoformat(dt_raw.replace('Z', '+00:00'))
                 dt = dt_obj.strftime('%Y-%m-%d')
             except:
                 dt = dt_raw[:10]
 
-        
-            if "security" in notes.lower():
-                risk = "🟢 Low"
-            else:
-                risk = "🟡 Medium"
-
+            risk = assess_risk(notes)
             print(f"| {name} | iOS | {ver} | {dt} | {risk} | {notes} |")
             ios_success = True
     except:
@@ -55,28 +58,21 @@ for name, ids in apps.items():
     if not ios_success:
         print(f"| {name} | iOS | N/A | N/A | ⚠️ Unknown | Could not fetch data. |")
 
-    # --- Android section ---
     try:
         and_data = android_app(ids['android'])
         a_ver = and_data.get('version', 'Varies')
         a_notes = and_data.get('recentChanges', 'Security improvements.').replace('\n', '<br>').replace('|', ' ')
 
-        # Parse updated date
         a_updated = and_data.get('updated', '')
         try:
-            if isinstance(a_updated, int): 
+            if isinstance(a_updated, int):
                 a_date = datetime.datetime.fromtimestamp(a_updated).strftime('%Y-%m-%d')
-            else:  
+            else:
                 a_date = datetime.datetime.strptime(a_updated, "%B %d, %Y").strftime('%Y-%m-%d')
         except:
             a_date = str(a_updated)[:10]
 
-        # Risk based on keywords
-        if "security" in a_notes.lower():
-            a_risk = "🟢 Low"
-        else:
-            a_risk = "🟡 Medium"
-
+        a_risk = assess_risk(a_notes)
         print(f"| {name} | Android | {a_ver} | {a_date} | {a_risk} | {a_notes} |")
     except:
         print(f"| {name} | Android | Error | N/A | ⚠️ Unknown | Could not reach Google Play. |")
