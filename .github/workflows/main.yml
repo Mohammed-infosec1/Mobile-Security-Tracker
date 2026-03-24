@@ -1,9 +1,8 @@
 name: Global Security Audit
 on:
   schedule:
-    - cron: '0 0 * * *' # Runs at midnight automatically
-  workflow_dispatch: # A button so you can run it manually anytime
-
+    - cron: '0 0 * * *' 
+  workflow_dispatch: 
 jobs:
   audit:
     runs-on: ubuntu-latest
