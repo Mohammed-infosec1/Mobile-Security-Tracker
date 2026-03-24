@@ -3,7 +3,6 @@ import datetime
 import time
 from google_play_scraper import app as android_app
 
-
 apps = {
     "Facebook":  {"ios": "284882215", "android": "com.facebook.katana"},
     "Instagram": {"ios": "389801252", "android": "com.instagram.android"},
@@ -22,42 +21,62 @@ print("| Application | Platform | Version | Release Date | Risk Level | Fixes & 
 print("| :--- | :--- | :--- | :--- | :--- | :--- |")
 
 for name, ids in apps.items():
-  
-    ios_success = False
-    
-    if name == "Snapchat":
-        v_snap = "13.84.1.0"
-        d_snap = "2026-03-24"
-        n_snap = "Just a little tune-up to keep everything running smoothly!"
-        print(f"| {name} | iOS | {v_snap} | {d_snap} | 🟢 Low | {n_snap} |")
-        ios_success = True
-    else:
-        try:
-            time.sleep(3) 
-            ios_url = f"https://itunes.apple.com/lookup?id={ids['ios']}&country=us&entity=software"
-            response = requests.get(ios_url, headers=headers, timeout=20).json()
-            if response['results']:
-                data = response['results'][0]
-                ver = data['version']
-                dt = data['currentVersionReleaseDate'][:10]
-                notes = data.get('releaseNotes', 'Security improvements.').replace('\n', '<br>').replace('|', ' ')
-                risk = "🟢 Low" if "2026" in dt else "🔴 High"
-                print(f"| {name} | iOS | {ver} | {dt} | {risk} | {notes} |")
-                ios_success = True
-        except:
-            pass
-    
-    if not ios_success:
-        print(f"| {name} | iOS | N/A | N/A | ⚠️ Unknown | Connection busy. |")
 
    
+    ios_success = False
+    try:
+        time.sleep(2)
+        ios_url = f"https://itunes.apple.com/lookup?id={ids['ios']}&country=us&entity=software"
+        response = requests.get(ios_url, headers=headers, timeout=15).json()
+        if response['results']:
+            data = response['results'][0]
+            ver = data.get('version', 'N/A')
+            dt_raw = data.get('currentVersionReleaseDate', '')
+            notes = data.get('releaseNotes', 'Security improvements.').replace('\n', '<br>').replace('|', ' ')
+
+      
+            try:
+                dt_obj = datetime.datetime.fromisoformat(dt_raw.replace('Z', '+00:00'))
+                dt = dt_obj.strftime('%Y-%m-%d')
+            except:
+                dt = dt_raw[:10]
+
+        
+            if "security" in notes.lower():
+                risk = "🟢 Low"
+            else:
+                risk = "🟡 Medium"
+
+            print(f"| {name} | iOS | {ver} | {dt} | {risk} | {notes} |")
+            ios_success = True
+    except:
+        pass
+
+    if not ios_success:
+        print(f"| {name} | iOS | N/A | N/A | ⚠️ Unknown | Could not fetch data. |")
+
+    # --- Android section ---
     try:
         and_data = android_app(ids['android'])
         a_ver = and_data.get('version', 'Varies')
-        a_updated = and_data.get('updated')
-        a_date = datetime.datetime.fromtimestamp(a_updated).strftime('%Y-%m-%d') if isinstance(a_updated, int) else str(a_updated)[:10]
         a_notes = and_data.get('recentChanges', 'Security improvements.').replace('\n', '<br>').replace('|', ' ')
-        a_risk = "🟢 Low" if "2026" in a_date else "🔴 High"
+
+        # Parse updated date
+        a_updated = and_data.get('updated', '')
+        try:
+            if isinstance(a_updated, int): 
+                a_date = datetime.datetime.fromtimestamp(a_updated).strftime('%Y-%m-%d')
+            else:  
+                a_date = datetime.datetime.strptime(a_updated, "%B %d, %Y").strftime('%Y-%m-%d')
+        except:
+            a_date = str(a_updated)[:10]
+
+        # Risk based on keywords
+        if "security" in a_notes.lower():
+            a_risk = "🟢 Low"
+        else:
+            a_risk = "🟡 Medium"
+
         print(f"| {name} | Android | {a_ver} | {a_date} | {a_risk} | {a_notes} |")
     except:
         print(f"| {name} | Android | Error | N/A | ⚠️ Unknown | Could not reach Google Play. |")
