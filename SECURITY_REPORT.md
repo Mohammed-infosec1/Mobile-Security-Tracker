@@ -4,8 +4,8 @@
 ## ⚙️ 1. Core Operating Systems
 | System | Status | Security Notes |
 | :--- | :--- | :--- |
-| Apple iOS | 🟢 Active | *Check Settings.* |
-| Google Android | 🟢 Active | *Check Settings.* |
+| Apple iOS | 🟢 Active | *Check Settings > General > Software Update.* |
+| Google Android | 🟢 Active | *Check Settings > Security & Privacy.* |
 
 ## 📲 2. Application Updates & Vulnerability Status
 | Application | Platform | Version | Release Date | Risk Level | Fixes & Full Release Notes |
@@ -18,7 +18,7 @@
 | WhatsApp | Android | Varies with device | 2026-03-21 | 🟢 Low | Security improvements. |
 | Telegram | iOS | 12.5.2 | 2026-03-10 | 🟢 Low | Bug fixes, minor improvements, and more. |
 | Telegram | Android | 12.5.1 | 2026-03-12 | 🟢 Low | Security improvements. |
-| Snapchat | iOS | N/A | N/A | ⚠️ Unknown | Connection busy. |
+| Snapchat | iOS | 13.84.1.0 | 2026-03-24 | 🟢 Low | Just a little tune-up to keep everything running smoothly! |
 | Snapchat | Android | 13.84.0.50 | 2026-03-18 | 🟢 Low | Security improvements. |
 
 ---
