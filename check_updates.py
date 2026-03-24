@@ -32,10 +32,11 @@ print("| :--- | :--- | :--- | :--- | :--- | :--- |")
 for name, ids in apps.items():
     # --- Apple iOS Check ---
     ios_success = False
-    for attempt in range(3): # Try 3 times if Apple is busy
+    for attempt in range(3): 
         try:
-            ios_url = f"https://itunes.apple.com/lookup?id={ids['ios']}"
-            response = requests.get(ios_url, headers=headers, timeout=20).json()
+            # Added &entity=software for better Snapchat discovery
+            ios_url = f"https://itunes.apple.com/lookup?id={ids['ios']}&entity=software"
+            response = requests.get(ios_url, headers=headers, timeout=15).json()
             if response['results']:
                 ios_data = response['results'][0]
                 i_ver = ios_data['version']
@@ -45,8 +46,8 @@ for name, ids in apps.items():
                 print(f"| {name} | iOS | {i_ver} | {i_date} | {i_risk} | {i_notes} |")
                 ios_success = True
                 break
-         dream_except:
-            time.sleep(2) # Wait 2 seconds before retrying
+        except:
+            time.sleep(2) 
     
     if not ios_success:
         print(f"| {name} | iOS | N/A | N/A | ⚠️ Unknown | Apple Store busy. Will retry tomorrow. |")
@@ -60,7 +61,7 @@ for name, ids in apps.items():
         a_notes = and_data.get('recentChanges', 'Security improvements.').replace('\n', '<br>').replace('|', ' ')
         a_risk = "🟢 Low" if "2026" in a_date else "🔴 High"
         print(f"| {name} | Android | {a_ver} | {a_date} | {a_risk} | {a_notes} |")
-    except Exception:
+    except:
         print(f"| {name} | Android | Error | N/A | ⚠️ Unknown | Could not reach Google Play. |")
 
 print("\n---\n*This report is automatically generated every 24 hours.*")
