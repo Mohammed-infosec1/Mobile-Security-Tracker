@@ -11,13 +11,15 @@ apps = {
     "Snapchat":  {"ios": "447134409", "android": "com.snapchat.android"}
 }
 
-headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
+headers = {
+    'User-Agent': 'Mozilla/5.0'
+}
 
 def assess_risk(notes):
     notes_lower = notes.lower()
-    critical_keywords = ["critical", "urgent", "vulnerability", "exploit", "cve", "security patch", "remote code execution"]
-    security_keywords = ["security", "patch", "fixes security", "vulnerability fixed"]
-    bug_keywords = ["bug", "crash", "stability", "performance", "minor fix", "improvement"]
+    critical_keywords = ["critical", "urgent", "vulnerability", "exploit", "cve", "remote code execution"]
+    security_keywords = ["security", "patch", "fix"]
+    bug_keywords = ["bug", "crash", "stability", "performance", "improvement"]
 
     if any(k in notes_lower for k in critical_keywords):
         return "🔴 High"
@@ -28,50 +30,64 @@ def assess_risk(notes):
     else:
         return "🟡 Medium"
 
+def fetch_ios_data(app_id):
+    url = f"https://itunes.apple.com/lookup?id={app_id}&country=us"
+
+    for _ in range(3):
+        try:
+            response = requests.get(url, headers=headers, timeout=10)
+            if response.status_code == 200:
+                data_json = response.json()
+                if data_json.get("resultCount", 0) > 0:
+                    return data_json["results"][0]
+        except:
+            time.sleep(2)
+    return None
+
 print(f"# 📱 Global OS & App Security Tracker")
 print(f"**Audit Date:** {datetime.date.today()}\n")
-print("## ⚙️ 1. Core Operating Systems\n| System | Status | Security Notes |\n| :--- | :--- | :--- |\n| Apple iOS | 🟢 Active | *Check Settings > General > Software Update.* |\n| Google Android | 🟢 Active | *Check Settings > Security & Privacy.* |\n")
+
+print("## ⚙️ 1. Core Operating Systems")
+print("| System | Status | Security Notes |")
+print("| :--- | :--- | :--- |")
+print("| Apple iOS | 🟢 Active | *Check Settings > General > Software Update.* |")
+print("| Google Android | 🟢 Active | *Check Settings > Security & Privacy.* |\n")
+
 print("## 📲 2. Application Updates & Vulnerability Status")
 print("| Application | Platform | Version | Release Date | Risk Level | Fixes & Full Release Notes |")
 print("| :--- | :--- | :--- | :--- | :--- | :--- |")
 
 for name, ids in apps.items():
-    ios_success = False
-    try:
-        time.sleep(2)
-        ios_url = f"https://itunes.apple.com/lookup?id={ids['ios']}&country=us&entity=software"
-        response = requests.get(ios_url, headers=headers, timeout=15).json()
-        if response['results']:
-            data = response['results'][0]
-            ver = data.get('version', 'N/A')
-            dt_raw = data.get('currentVersionReleaseDate', '')
-            notes = data.get('releaseNotes', 'Security improvements.').replace('\n', '<br>').replace('|', ' ')
-            try:
-                dt_obj = datetime.datetime.fromisoformat(dt_raw.replace('Z', '+00:00'))
-                dt = dt_obj.strftime('%Y-%m-%d')
-            except:
-                dt = dt_raw[:10]
 
-            risk = assess_risk(notes)
-            print(f"| {name} | iOS | {ver} | {dt} | {risk} | {notes} |")
-            ios_success = True
-    except:
-        pass
+    ios_data = fetch_ios_data(ids["ios"])
 
-    if not ios_success:
-        print(f"| {name} | iOS | N/A | N/A | ⚠️ Unknown | Could not fetch data. |")
-
-    try:
-        and_data = android_app(ids['android'])
-        a_ver = and_data.get('version', 'Varies')
-        a_notes = and_data.get('recentChanges', 'Security improvements.').replace('\n', '<br>').replace('|', ' ')
-        a_updated = and_data.get('updated', '')
+    if ios_data:
+        ver = ios_data.get("version", "N/A")
+        dt_raw = ios_data.get("currentVersionReleaseDate", "")
+        notes = ios_data.get("releaseNotes", "No details provided.").replace("\n", "<br>").replace("|", " ")
 
         try:
+            dt_obj = datetime.datetime.fromisoformat(dt_raw.replace("Z", "+00:00"))
+            dt = dt_obj.strftime("%Y-%m-%d")
+        except:
+            dt = dt_raw[:10]
+
+        risk = assess_risk(notes)
+        print(f"| {name} | iOS | {ver} | {dt} | {risk} | {notes} |")
+    else:
+        print(f"| {name} | iOS | Unknown | Unknown | ⚠️ Unknown | App Store data not available. |")
+
+    try:
+        and_data = android_app(ids["android"])
+        a_ver = and_data.get("version", "Varies")
+        a_notes = and_data.get("recentChanges", "No details provided.").replace("\n", "<br>").replace("|", " ")
+
+        a_updated = and_data.get("updated", "")
+        try:
             if isinstance(a_updated, int):
-                a_date = datetime.datetime.fromtimestamp(a_updated).strftime('%Y-%m-%d')
+                a_date = datetime.datetime.fromtimestamp(a_updated).strftime("%Y-%m-%d")
             else:
-                a_date = datetime.datetime.strptime(a_updated, "%B %d, %Y").strftime('%Y-%m-%d')
+                a_date = datetime.datetime.strptime(a_updated, "%B %d, %Y").strftime("%Y-%m-%d")
         except:
             a_date = str(a_updated)[:10]
 
