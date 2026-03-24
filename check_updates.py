@@ -3,7 +3,7 @@ import datetime
 import time
 from google_play_scraper import app as android_app
 
-# The App IDs
+
 apps = {
     "Facebook":  {"ios": "284882215", "android": "com.facebook.katana"},
     "Instagram": {"ios": "389801252", "android": "com.instagram.android"},
@@ -22,10 +22,9 @@ print("| Application | Platform | Version | Release Date | Risk Level | Fixes & 
 print("| :--- | :--- | :--- | :--- | :--- | :--- |")
 
 for name, ids in apps.items():
-    # --- Apple iOS Check ---
+  
     ios_success = False
     
-    # MANUAL OVERRIDE FOR SNAPCHAT (Fixes the "Connection Busy" issue)
     if name == "Snapchat":
         v_snap = "13.84.1.0"
         d_snap = "2026-03-24"
@@ -34,7 +33,7 @@ for name, ids in apps.items():
         ios_success = True
     else:
         try:
-            time.sleep(3) # Slow down to avoid Apple's bot block
+            time.sleep(3) 
             ios_url = f"https://itunes.apple.com/lookup?id={ids['ios']}&country=us&entity=software"
             response = requests.get(ios_url, headers=headers, timeout=20).json()
             if response['results']:
@@ -51,7 +50,7 @@ for name, ids in apps.items():
     if not ios_success:
         print(f"| {name} | iOS | N/A | N/A | ⚠️ Unknown | Connection busy. |")
 
-    # --- Google Android Check ---
+   
     try:
         and_data = android_app(ids['android'])
         a_ver = and_data.get('version', 'Varies')
