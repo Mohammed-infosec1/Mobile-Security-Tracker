@@ -14,8 +14,8 @@
 | Facebook | Android | Varies with device | 2026-03-18 | 🟢 Low | Security improvements. |
 | Instagram | iOS | 421.1.0 | 2026-03-17 | 🟡 Medium | Performance optimizations and stability improvements for a smoother, more reliable experience. |
 | Instagram | Android | Varies with device | 2026-03-23 | 🟢 Low | Security improvements. |
-| WhatsApp | iOS | 26.10.74 | 2026-03-19 | 🟡 Medium | • The settings tab is now a profile tab, where you can manage your account, control your identity, and express yourself<br>• Channel admins can now more easily invite contacts to follow their channel directly from the channel chat thread<br><br><br>These features will roll out over the coming weeks. Thanks for using WhatsApp! |
-| WhatsApp | Android | Varies with device | 2026-03-21 | 🟢 Low | Security improvements. |
+| WhatsApp | iOS | 26.10.74 | 2026-03-19 | 🔴 High | • The settings tab is now a profile tab, where you can manage your account, control your identity, and express yourself<br>• Channel admins can now more easily invite contacts to follow their channel directly from the channel chat thread<br><br><br>These features will roll out over the coming weeks. Thanks for using WhatsApp! |
+| WhatsApp | Android | Varies with device | 2026-03-24 | 🟢 Low | Security improvements. |
 | Telegram | iOS | 12.5.2 | 2026-03-10 | 🟡 Medium | Bug fixes, minor improvements, and more. |
 | Telegram | Android | 12.5.1 | 2026-03-12 | 🟢 Low | Security improvements. |
 | Snapchat | iOS | N/A | N/A | ⚠️ Unknown | Could not fetch data. |
