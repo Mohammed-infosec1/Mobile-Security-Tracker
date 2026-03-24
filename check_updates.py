@@ -3,6 +3,7 @@ import datetime
 import time
 from google_play_scraper import app as android_app
 
+# The App IDs
 apps = {
     "Facebook":  {"ios": "284882215", "android": "com.facebook.katana"},
     "Instagram": {"ios": "389801252", "android": "com.instagram.android"},
@@ -11,34 +12,38 @@ apps = {
     "Snapchat":  {"ios": "447134409", "android": "com.snapchat.android"}
 }
 
-headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
 
 print(f"# 📱 Global OS & App Security Tracker")
 print(f"**Audit Date:** {datetime.date.today()}\n")
-print("## ⚙️ 1. Core Operating Systems")
-print("| System | Status | Security Notes |\n| :--- | :--- | :--- |\n| Apple iOS | 🟢 Active | *Check Settings.* |\n| Google Android | 🟢 Active | *Check Settings.* |\n")
+print("## ⚙️ 1. Core Operating Systems\n| System | Status | Security Notes |\n| :--- | :--- | :--- |\n| Apple iOS | 🟢 Active | *Check Settings.* |\n| Google Android | 🟢 Active | *Check Settings.* |\n")
 print("## 📲 2. Application Updates & Vulnerability Status")
 print("| Application | Platform | Version | Release Date | Risk Level | Fixes & Full Release Notes |")
 print("| :--- | :--- | :--- | :--- | :--- | :--- |")
 
 for name, ids in apps.items():
     # --- Apple iOS Check ---
-    ios_row = f"| {name} | iOS | N/A | N/A | ⚠️ Unknown | Connection busy. |"
+    ios_success = False
     try:
-        # NEW URL: Added 'country=us' to make the search more specific/stable
+        # We add a 3-second pause here so Apple doesn't get angry
+        time.sleep(3) 
         ios_url = f"https://itunes.apple.com/lookup?id={ids['ios']}&country=us&entity=software"
-        res = requests.get(ios_url, headers=headers, timeout=20).json()
-        if res['results']:
-            data = res['results'][0]
-            ver, dt = data['version'], data['currentVersionReleaseDate'][:10]
+        response = requests.get(ios_url, headers=headers, timeout=20).json()
+        if response['results']:
+            data = response['results'][0]
+            ver = data['version']
+            dt = data['currentVersionReleaseDate'][:10]
             notes = data.get('releaseNotes', 'Security improvements.').replace('\n', '<br>').replace('|', ' ')
             risk = "🟢 Low" if "2026" in dt else "🔴 High"
-            ios_row = f"| {name} | iOS | {ver} | {dt} | {risk} | {i_notes} |"
+            print(f"| {name} | iOS | {ver} | {dt} | {risk} | {notes} |")
+            ios_success = True
     except:
         pass
-    print(ios_row)
+    
+    if not ios_success:
+        print(f"| {name} | iOS | N/A | N/A | ⚠️ Unknown | Connection busy. |")
 
-    # --- Android Check ---
+    # --- Google Android Check ---
     try:
         and_data = android_app(ids['android'])
         a_ver = and_data.get('version', 'Varies')
@@ -50,4 +55,4 @@ for name, ids in apps.items():
     except:
         print(f"| {name} | Android | Error | N/A | ⚠️ Unknown | Connection busy. |")
 
-print("\n---\n*Generated every 24 hours.*")
+print("\n---\n*This report is automatically generated every 24 hours.*")
