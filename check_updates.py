@@ -2,13 +2,13 @@ import requests
 import datetime
 from google_play_scraper import app as android_app
 
-# The exact App IDs
+# The exact App IDs for ALL apps on BOTH platforms
 apps = {
-    "Facebook": {"ios": "284882215", "android": "com.facebook.katana"},
+    "Facebook":  {"ios": "284882215", "android": "com.facebook.katana"},
     "Instagram": {"ios": "389801252", "android": "com.instagram.android"},
-    "WhatsApp": {"ios": "310633997", "android": "com.whatsapp"},
-    "Telegram": {"ios": "686449807", "android": "org.telegram.messenger"},
-    "Snapchat": {"ios": "447134409", "android": "com.snapchat.android"}
+    "WhatsApp":  {"ios": "310633997", "android": "com.whatsapp"},
+    "Telegram":  {"ios": "686449807", "android": "org.telegram.messenger"},
+    "Snapchat":  {"ios": "447134409", "android": "com.snapchat.android"}
 }
 
 print(f"# 📱 Global OS & App Security Tracker")
@@ -31,12 +31,11 @@ for name, ids in apps.items():
         ios_data = requests.get(ios_url).json()['results'][0]
         i_ver = ios_data['version']
         i_date = ios_data['currentVersionReleaseDate'][:10]
-        # REMOVED LIMIT: Now gets the full text and replaces new lines with spaces
         i_notes = ios_data.get('releaseNotes', 'Security improvements.').replace('\n', ' ').replace('|', ' ')
         i_risk = "🟢 Low" if "2026" in i_date else "🔴 High"
         print(f"| {name} | iOS | {i_ver} | {i_date} | {i_risk} | {i_notes} |")
     except Exception:
-        pass
+        print(f"| {name} | iOS | Error | Error | ⚠️ Unknown | Could not fetch iOS data |")
 
     # --- Google Android Check ---
     try:
@@ -48,14 +47,12 @@ for name, ids in apps.items():
         else:
             a_date = str(a_updated)[:10]
             
-        # REMOVED LIMIT: Gets full Android changes
         a_notes = and_data.get('recentChanges', 'Security improvements.')
         if not a_notes: a_notes = "Security improvements."
         a_notes = a_notes.replace('\n', ' ').replace('|', ' ')
         a_risk = "🟢 Low" if "2026" in a_date else "🔴 High"
-        
         print(f"| {name} | Android | {a_ver} | {a_date} | {a_risk} | {a_notes} |")
     except Exception:
-        pass
+        print(f"| {name} | Android | Error | Error | ⚠️ Unknown | Could not fetch Android data |")
 
 print("\n---\n*This report is automatically generated every 24 hours.*")
