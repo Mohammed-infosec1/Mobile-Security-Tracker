@@ -1,8 +1,9 @@
 import requests
 import datetime
+import textwrap
 from google_play_scraper import app as android_app
 
-# The exact App IDs for ALL apps on BOTH platforms
+# The exact App IDs - Updated for stability
 apps = {
     "Facebook":  {"ios": "284882215", "android": "com.facebook.katana"},
     "Instagram": {"ios": "389801252", "android": "com.instagram.android"},
@@ -27,15 +28,20 @@ print("| :--- | :--- | :--- | :--- | :--- | :--- |")
 for name, ids in apps.items():
     # --- Apple iOS Check ---
     try:
-        ios_url = f"https://itunes.apple.com/lookup?id={ids['ios']}"
-        ios_data = requests.get(ios_url).json()['results'][0]
-        i_ver = ios_data['version']
-        i_date = ios_data['currentVersionReleaseDate'][:10]
-        i_notes = ios_data.get('releaseNotes', 'Security improvements.').replace('\n', ' ').replace('|', ' ')
-        i_risk = "🟢 Low" if "2026" in i_date else "🔴 High"
-        print(f"| {name} | iOS | {i_ver} | {i_date} | {i_risk} | {i_notes} |")
+        ios_url = f"https://itunes.apple.com/lookup?id={ids['ios']}&entity=software"
+        response = requests.get(ios_url, timeout=10).json()
+        if response['results']:
+            ios_data = response['results'][0]
+            i_ver = ios_data['version']
+            i_date = ios_data['currentVersionReleaseDate'][:10]
+            raw_notes = ios_data.get('releaseNotes', 'Security improvements.')
+            i_notes = raw_notes.replace('\n', '<br>').replace('|', ' ')
+            i_risk = "🟢 Low" if "2026" in i_date else "🔴 High"
+            print(f"| {name} | iOS | {i_ver} | {i_date} | {i_risk} | {i_notes} |")
+        else:
+            raise Exception("No results")
     except Exception:
-        print(f"| {name} | iOS | Error | Error | ⚠️ Unknown | Could not fetch iOS data |")
+        print(f"| {name} | iOS | N/A | N/A | ⚠️ Unknown | Connection to Apple Store timed out. |")
 
     # --- Google Android Check ---
     try:
@@ -46,13 +52,13 @@ for name, ids in apps.items():
             a_date = datetime.datetime.fromtimestamp(a_updated).strftime('%Y-%m-%d')
         else:
             a_date = str(a_updated)[:10]
-            
-        a_notes = and_data.get('recentChanges', 'Security improvements.')
-        if not a_notes: a_notes = "Security improvements."
-        a_notes = a_notes.replace('\n', ' ').replace('|', ' ')
+        
+        raw_a_notes = and_data.get('recentChanges', 'Security improvements.')
+        if not raw_a_notes: raw_a_notes = "Security improvements."
+        a_notes = raw_a_notes.replace('\n', '<br>').replace('|', ' ')
         a_risk = "🟢 Low" if "2026" in a_date else "🔴 High"
         print(f"| {name} | Android | {a_ver} | {a_date} | {a_risk} | {a_notes} |")
     except Exception:
-        print(f"| {name} | Android | Error | Error | ⚠️ Unknown | Could not fetch Android data |")
+        print(f"| {name} | Android | N/A | N/A | ⚠️ Unknown | Connection to Google Play timed out. |")
 
 print("\n---\n*This report is automatically generated every 24 hours.*")
