@@ -1,5 +1,5 @@
 # 📱 Global OS & App Security Tracker
-**Audit Date:** 2026-04-01
+**Audit Date:** 2026-04-02
 
 ## ⚙️ 1. Core Operating Systems
 | System | Status | Security Notes |
@@ -17,9 +17,9 @@
 | WhatsApp | iOS | 26.10.74 | 2026-03-19 | 🟡 Medium | • The settings tab is now a profile tab, where you can manage your account, control your identity, and express yourself<br>• Channel admins can now more easily invite contacts to follow their channel directly from the channel chat thread<br><br><br>These features will roll out over the coming weeks. Thanks for using WhatsApp! |
 | WhatsApp | Android | Varies with device | 2026-03-28 | 🟡 Medium | No details provided. |
 | Telegram | iOS | 12.6 | 2026-03-31 | 🟢 Low | Bug fixes, minor improvements, and more. |
-| Telegram | Android | 12.6.0 | 2026-03-30 | 🟡 Medium | No details provided. |
+| Telegram | Android | 12.6.2 | 2026-04-01 | 🟡 Medium | No details provided. |
 | Snapchat | iOS | Unknown | Unknown | ⚠️ Unknown | App Store data not available. |
-| Snapchat | Android | 13.85.0.53 | 2026-03-31 | 🟡 Medium | No details provided. |
+| Snapchat | Android | 13.86.0.50 | 2026-03-31 | 🟡 Medium | No details provided. |
 
 ---
 *This report is automatically generated every 24 hours.*
