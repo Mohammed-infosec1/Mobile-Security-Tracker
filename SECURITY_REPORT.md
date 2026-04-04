@@ -1,5 +1,5 @@
 # 📱 Global OS & App Security Tracker
-**Audit Date:** 2026-04-03
+**Audit Date:** 2026-04-04
 
 ## ⚙️ 1. Core Operating Systems
 | System | Status | Security Notes |
@@ -14,12 +14,12 @@
 | Facebook | Android | Varies with device | 2026-04-02 | 🟡 Medium | No details provided. |
 | Instagram | iOS | 423.1.0 | 2026-04-02 | 🟡 Medium | Performance optimizations and stability improvements for a smoother, more reliable experience. |
 | Instagram | Android | Varies with device | 2026-03-30 | 🟡 Medium | No details provided. |
-| WhatsApp | iOS | 26.10.74 | 2026-03-19 | 🟡 Medium | • The settings tab is now a profile tab, where you can manage your account, control your identity, and express yourself<br>• Channel admins can now more easily invite contacts to follow their channel directly from the channel chat thread<br><br><br>These features will roll out over the coming weeks. Thanks for using WhatsApp! |
+| WhatsApp | iOS | 26.12.78 | 2026-04-03 | 🟢 Low | We update the app regularly to fix bugs, optimize performance and improve the experience. Thanks for using WhatsApp! |
 | WhatsApp | Android | Varies with device | 2026-03-28 | 🟡 Medium | No details provided. |
 | Telegram | iOS | 12.6.1 | 2026-04-02 | 🟢 Low | Bug fixes, minor improvements, and more. |
-| Telegram | Android | 12.6.2 | 2026-04-01 | 🟡 Medium | No details provided. |
+| Telegram | Android | 12.6.3 | 2026-04-01 | 🟡 Medium | No details provided. |
 | Snapchat | iOS | Unknown | Unknown | ⚠️ Unknown | App Store data not available. |
-| Snapchat | Android | 13.86.0.50 | 2026-04-02 | 🟡 Medium | No details provided. |
+| Snapchat | Android | 13.86.1.0 | 2026-04-02 | 🟡 Medium | No details provided. |
 
 ---
 *This report is automatically generated every 24 hours.*
