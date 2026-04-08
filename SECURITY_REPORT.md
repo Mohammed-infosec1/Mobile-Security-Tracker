@@ -1,5 +1,5 @@
 # 📱 Global OS & App Security Tracker
-**Audit Date:** 2026-04-07
+**Audit Date:** 2026-04-08
 
 ## ⚙️ 1. Core Operating Systems
 | System | Status | Security Notes |
@@ -19,7 +19,7 @@
 | Telegram | iOS | 12.6.1 | 2026-04-02 | 🟢 Low | Bug fixes, minor improvements, and more. |
 | Telegram | Android | 12.6.3 | 2026-04-05 | 🟡 Medium | No details provided. |
 | Snapchat | iOS | Unknown | Unknown | ⚠️ Unknown | App Store data not available. |
-| Snapchat | Android | 13.86.1.0 | 2026-04-02 | 🟡 Medium | No details provided. |
+| Snapchat | Android | 13.86.1.0 | 2026-04-07 | 🟡 Medium | No details provided. |
 
 ---
 *This report is automatically generated every 24 hours.*
