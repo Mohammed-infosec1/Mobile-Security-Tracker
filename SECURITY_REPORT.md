@@ -1,5 +1,5 @@
 # 📱 Global OS & App Security Tracker
-**Audit Date:** 2026-06-18
+**Audit Date:** 2026-06-19
 
 ## ⚙️ 1. Core Operating Systems
 | System | Status | Security Notes |
@@ -10,7 +10,7 @@
 ## 📲 2. Application Updates & Vulnerability Status
 | Application | Platform | Version | Release Date | Risk Level | Fixes & Full Release Notes |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| Facebook | iOS | 566.0.0 | 2026-06-16 | 🟢 Low | Our teams have solved many crashes, fixed issues you’ve reported and made the app faster. |
+| Facebook | iOS | 566.1 | 2026-06-18 | 🟢 Low | Our teams have solved many crashes, fixed issues you’ve reported and made the app faster. |
 | Facebook | Android | Varies with device | 2026-06-17 | 🟡 Medium | No details provided. |
 | Instagram | iOS | 434.0.0 | 2026-06-15 | 🟡 Medium | Performance optimizations and stability improvements for a smoother, more reliable experience. |
 | Instagram | Android | Varies with device | 2026-06-15 | 🟡 Medium | No details provided. |
