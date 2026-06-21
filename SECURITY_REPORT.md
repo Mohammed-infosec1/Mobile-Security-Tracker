@@ -1,5 +1,5 @@
 # 📱 Global OS & App Security Tracker
-**Audit Date:** 2026-06-20
+**Audit Date:** 2026-06-21
 
 ## ⚙️ 1. Core Operating Systems
 | System | Status | Security Notes |
@@ -17,7 +17,7 @@
 | WhatsApp | iOS | 2.26.22.79 | 2026-06-19 | 🟢 Low | We update the app regularly to fix bugs, optimize performance and improve the experience. Thanks for using WhatsApp! |
 | WhatsApp | Android | Varies with device | 2026-06-16 | 🟡 Medium | No details provided. |
 | Telegram | iOS | 12.8 | 2026-06-09 | 🟢 Low | Bug fixes, minor improvements, and more. |
-| Telegram | Android | Varies with device | 2026-06-16 | 🟡 Medium | No details provided. |
+| Telegram | Android | Varies with device | 2026-06-18 | 🟡 Medium | No details provided. |
 | Snapchat | iOS | Unknown | Unknown | ⚠️ Unknown | App Store data not available. |
 | Snapchat | Android | 14.11.0.49 | 2026-06-16 | 🟡 Medium | No details provided. |
 
