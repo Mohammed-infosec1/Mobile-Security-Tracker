@@ -1,5 +1,5 @@
 # 📱 Global OS & App Security Tracker
-**Audit Date:** 2026-07-22
+**Audit Date:** 2026-07-23
 
 ## ⚙️ 1. Core Operating Systems
 | System | Status | Security Notes |
@@ -15,11 +15,11 @@
 | Instagram | iOS | 439.0.0 | 2026-07-20 | 🟡 Medium | Performance optimizations and stability improvements for a smoother, more reliable experience. |
 | Instagram | Android | Varies with device | 2026-07-20 | 🟡 Medium | No details provided. |
 | WhatsApp | iOS | 26.28.75 | 2026-07-20 | 🟢 Low | We update the app regularly to fix bugs, optimize performance and improve the experience. Thanks for using WhatsApp! |
-| WhatsApp | Android | Varies with device | 2026-07-18 | 🟡 Medium | No details provided. |
+| WhatsApp | Android | Varies with device | 2026-07-22 | 🟡 Medium | No details provided. |
 | Telegram | iOS | 12.9.2 | 2026-07-20 | 🟢 Low | Bug fixes, minor improvements, and more. |
 | Telegram | Android | Varies with device | 2026-07-10 | 🟡 Medium | No details provided. |
 | Snapchat | iOS | Unknown | Unknown | ⚠️ Unknown | App Store data not available. |
-| Snapchat | Android | 14.15.0.35 | 2026-07-21 | 🟡 Medium | No details provided. |
+| Snapchat | Android | 14.16.0.49 | 2026-07-21 | 🟡 Medium | No details provided. |
 
 ---
 *This report is automatically generated every 24 hours.*
