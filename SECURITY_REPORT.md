@@ -1,5 +1,5 @@
 # 📱 Global OS & App Security Tracker
-**Audit Date:** 2026-08-26
+**Audit Date:** 2026-08-27
 
 ## ⚙️ 1. Core Operating Systems
 | System | Status | Security Notes |
@@ -10,7 +10,7 @@
 ## 📲 2. Application Updates & Vulnerability Status
 | Application | Platform | Version | Release Date | Risk Level | Fixes & Full Release Notes |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| Facebook | iOS | 575.0.0 | 2026-08-18 | 🟢 Low | Our teams have solved many crashes, fixed issues you’ve reported and made the app faster. |
+| Facebook | iOS | 576.0.0 | 2026-08-26 | 🟢 Low | Our teams have solved many crashes, fixed issues you’ve reported and made the app faster. |
 | Facebook | Android | Varies with device | 2026-08-21 | 🟡 Medium | No details provided. |
 | Instagram | iOS | 444.0.0 | 2026-08-24 | 🟡 Medium | Performance optimizations and stability improvements for a smoother, more reliable experience. |
 | Instagram | Android | Varies with device | 2026-08-24 | 🟡 Medium | No details provided. |
@@ -19,7 +19,7 @@
 | Telegram | iOS | 12.9.3 | 2026-08-21 | 🟢 Low | Bug fixes, minor improvements, and more. |
 | Telegram | Android | Varies with device | 2026-08-23 | 🟡 Medium | No details provided. |
 | Snapchat | iOS | Unknown | Unknown | ⚠️ Unknown | App Store data not available. |
-| Snapchat | Android | 14.20.0.50 | 2026-08-18 | 🟡 Medium | No details provided. |
+| Snapchat | Android | 14.21.0.55 | 2026-08-25 | 🟡 Medium | No details provided. |
 
 ---
 *This report is automatically generated every 24 hours.*
